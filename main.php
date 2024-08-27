@@ -5,9 +5,14 @@ function stop_youtube_on_tabs_change() {
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.jet-tabs__control').forEach(control => {
                 control.addEventListener('click', function() {
-                    document.querySelectorAll('iframe').forEach(iframe => {
+                    const iframes = document.querySelectorAll('iframe');
+                    iframes.forEach(iframe => {
                         if (iframe.src.includes('youtube.com')) {
-                            iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                            const src = iframe.src;
+                            iframe.src = ''; // Remove temporariamente o src para parar o vídeo
+                            setTimeout(() => {
+                                iframe.src = src; // Restaura o src original
+                            }, 500);
                         }
                     });
                 });
